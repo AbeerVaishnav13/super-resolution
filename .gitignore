@@ -1,0 +1,6 @@
+.ipynb_checkpoints
+.div2k
+.ckpt
+__pycache__
+.DS_Store
+node_modules
