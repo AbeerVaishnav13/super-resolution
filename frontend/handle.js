@@ -34,6 +34,7 @@ function displayImage(file) {
 }
 
 var size = 500;
+var imgLR;
 
 function loadImage(src) {
   var image = new Image();
@@ -54,12 +55,31 @@ function loadImage(src) {
     }
     img_lr.width = W; img_lr.height = H;
 
-    var imgLR = nj.images.read(image);
+    imgLR = nj.images.read(image);
     console.log(imgLR.selection)
   }
   image.src = src;
 }
 
 function upload() {
+  var sp = imgLR.shape
 
+  var imgArr = []
+
+  for(var i = 0; i < sp[0]; i++) {
+    imgArr.push([])
+    for(var j = 0; j < sp[1]; j++) {
+      imgArr[i].push([])
+      for(var k = 0; k < sp[2]; k++) {
+        if(k == 3) { continue; }
+        imgArr[i][j].push(imgLR.selection.data[i*sp[1]*sp[2] + j*sp[2] + k])
+      }
+    }
+  }
+
+  //axios.post('https://localhost:8501/v1/models/srgan:predict', {
+  //  "instances": [imgArr]
+  //}).then(response => {
+  //  console.log(response)
+  //});
 }
