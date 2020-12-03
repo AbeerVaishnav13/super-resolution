@@ -20,7 +20,7 @@ if __name__ == "__main__":
 
     tf.saved_model.save(
         gan_generator,
-        export_dir='models/gan_generator',
+        export_dir='tmp/srgan/1/',
         signatures=None,
     )
 

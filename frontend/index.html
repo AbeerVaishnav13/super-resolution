@@ -1,0 +1,18 @@
+<head>
+	<script src="https://cdn.jsdelivr.net/gh/nicolaspanel/numjs@0.15.1/dist/numjs.min.js"></script>
+</head>
+<body>
+	<label for="myfile">Select a file:</label>
+	<input type="file" id="myfile" name="myfile" accept=".jpg, .jpeg, .png">
+
+	<button onclick="upload()">Upscale!</button>
+
+	<br><br>
+	<div id='drop-area' style='background-color: lightblue; height: 500px; width: 500px;'>
+		<center>Drag and drop and image</center>
+		<img id='img-lr'></img>
+	</div>
+	<img id='img-sr'></img>
+
+	<script src='handle.js'></script>
+</body>

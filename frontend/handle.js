@@ -1,41 +1,65 @@
-var app = require('express')();
-var http = require('http')(app);
-var io = require('socket.io')(http);
-
-function handleFileSelect(ele){
-    var file = ele.target.files[0];
-    var fileReader = new FileReader();
-    fileReader.readAsArrayBuffer(file);
-    fileReader.onload = () => {
-        var arrayBuffer = fileReader.result;
-        socketControl.uploadImage({
-            name: file.name,
-            type: file.type,
-            size: file.size,
-            binary: arrayBuffer
-        });
-    }
-}
-
-function appendImageMessage(data) {
-    var messageContainer = document.getElementById('message-container');
-    messageContainer.appendChild(createImageMessageDOM(data))
-}
-
-function createImageMessageDOM(data) {
-    var img = document.createElement("img");
-    var str = String.fromCharCode.apply(null, new Uint8Array(data.binary));
-    img.src = 'data:image/jpg;base64,' + btoa(str);
-    img.style.width = '100%';
-}
-
-var socket = io.connect('http://' + document.domain + ':' + location.port);
-socket.on('connect', function() {
-    console.log('initSocketIO')
+const fileSelector = document.getElementById('myfile');
+fileSelector.addEventListener('change', (event) => {
+  const fileList = event.target.files;
+  displayImage(fileList[0])
 });
 
-document.getElementById('files').addEventListener('change', handleFileSelect, false);
+const dropArea = document.getElementById('drop-area');
 
-socket.on("send-image", function(data){
-    appendImageMessage(data)
-})
+dropArea.addEventListener('dragover', (event) => {
+  event.stopPropagation();
+  event.preventDefault();
+  event.dataTransfer.dropEffect = 'copy';
+});
+
+dropArea.addEventListener('drop', (event) => {
+  event.stopPropagation();
+  event.preventDefault();
+  const fileList = event.dataTransfer.files;
+  displayImage(fileList[0])
+});
+
+function displayImage(file) {
+  if (file.type && file.type.indexOf('image') === -1) {
+    console.log('File is not an image.', file.type, file);
+    return;
+  }
+
+  const reader = new FileReader();
+  reader.onload = function(e) {
+    loadImage(e.target.result);
+  };
+
+  reader.readAsDataURL(file);
+}
+
+var size = 500;
+
+function loadImage(src) {
+  var image = new Image();
+  image.crossOrigin = 'Anonymous';
+
+  var img_lr = document.getElementById('img-lr');
+  img_lr.src = src;
+
+  image.onload = function() {
+    var W, H;
+    if (image.width < image.height){
+      W = ~~(size * image.width / image.height);
+      H = ~~(size);
+    }
+    else{
+      H = ~~(size * image.height / image.width);
+      W = ~~(size);
+    }
+    img_lr.width = W; img_lr.height = H;
+
+    var imgLR = nj.images.read(image);
+    console.log(imgLR.selection)
+  }
+  image.src = src;
+}
+
+function upload() {
+
+}
