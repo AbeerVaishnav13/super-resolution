@@ -4,8 +4,12 @@ const bodyparser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
+const { exec } = require('child_process')
 
 const SERVER_PORT = 4000;
+const input_file_path = "../LR-input/lr_image.png";
+const output_file_path = "../SR-output/sr_image.png";
+const py_cmd = "python3 ../client.py ".concat(input_file_path+" ").concat(output_file_path)
 
 var app = express();
 app.use(bodyparser.json());
@@ -29,7 +33,7 @@ app.listen(SERVER_PORT, () =>
 app.post("/upload", (req, res) => {
   console.log(req.files);
   fs.writeFile(
-    "../LR-input/lr_image.png",
+    input_file_path,
     req.files.image.data,
     function (err) {
       if (err) {
@@ -40,4 +44,21 @@ app.post("/upload", (req, res) => {
       res.sendStatus(200);
     }
   );
+
+  exec(py_cmd, (error, stdout, stderr) => {
+    if (error) {
+      console.log(error);
+    }
+    if (stderr) {
+      console.log(stderr);
+    }
+    console.log(stdout);
+
+    sendImageBack();
+  });
 });
+
+function sendImageBack() {
+  // Put the code for sending SR-image back to the user
+  // that is placed in the 'output_file_path' variable
+}

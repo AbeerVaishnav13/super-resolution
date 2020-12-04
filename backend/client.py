@@ -17,7 +17,7 @@ def main(args):
     json_response = requests.post('http://localhost:8501/v1/models/srgan:predict', data=data, headers=headers)
     predictions = json.loads(json_response.text)['predictions']
     out = np.array(predictions, dtype=np.uint8)
-    save_image(out[0], 'SR-output/SR (GAN).png')
+    save_image(out[0], args[1])
 
 if __name__ == "__main__":
     main(sys.argv[1:])
