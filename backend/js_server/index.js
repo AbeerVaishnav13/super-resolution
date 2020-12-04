@@ -4,12 +4,14 @@ const bodyparser = require("body-parser");
 const multer = require("multer");
 const path = require("path");
 const fs = require("fs");
-const { exec } = require('child_process')
+const { exec } = require("child_process");
 
 const SERVER_PORT = 4000;
 const input_file_path = "../LR-input/lr_image.png";
 const output_file_path = "../SR-output/sr_image.png";
-const py_cmd = "python3 ../client.py ".concat(input_file_path+" ").concat(output_file_path)
+const py_cmd = "python3 ../client.py "
+  .concat(input_file_path + " ")
+  .concat(output_file_path);
 
 var app = express();
 app.use(bodyparser.json());
@@ -31,19 +33,13 @@ app.listen(SERVER_PORT, () =>
 );
 
 app.post("/upload", (req, res) => {
-  console.log(req.files);
-  fs.writeFile(
-    input_file_path,
-    req.files.image.data,
-    function (err) {
-      if (err) {
-        throw err;
-        res.sendStatus(400);
-      }
-      console.log("Saved!");
-      res.sendStatus(200);
+  //console.log(req.files);
+  fs.writeFile(input_file_path, req.files.image.data, function (err) {
+    if (err) {
+      console.log("Failed to save file in system");
     }
-  );
+    console.log("The file has been successfully saved");
+  });
 
   exec(py_cmd, (error, stdout, stderr) => {
     if (error) {
@@ -53,12 +49,15 @@ app.post("/upload", (req, res) => {
       console.log(stderr);
     }
     console.log(stdout);
-
-    sendImageBack();
+    sendImageBack(res);
   });
 });
 
-function sendImageBack() {
-  // Put the code for sending SR-image back to the user
-  // that is placed in the 'output_file_path' variable
+function sendImageBack(res) {
+  fs.readFile(output_file_path, function (err, data) {
+    if (!err) {
+      image_data = Buffer.from(data).toString("base64");
+      res.send({ image_data: image_data });
+    }
+  });
 }
