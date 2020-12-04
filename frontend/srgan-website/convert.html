@@ -13,6 +13,7 @@
   <meta content="summary_large_image" name="twitter:card">
   <meta content="width=device-width, initial-scale=1" name="viewport">
   <meta content="Webflow" name="generator">
+  <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
   <link href="css/normalize.css" rel="stylesheet" type="text/css">
   <link href="css/webflow.css" rel="stylesheet" type="text/css">
   <link href="css/srgan.webflow.css" rel="stylesheet" type="text/css">
@@ -326,6 +327,7 @@ function ekUpload(){
         xhr.setRequestHeader('X-File-Size', file.size);
         xhr.setRequestHeader('Content-Type', 'multipart/form-data');
         xhr.send(file);
+
       } else {
         output('Please upload a smaller file (< ' + fileSizeLimit + ' MB).');
       }
@@ -339,10 +341,29 @@ function ekUpload(){
   }
 }
 ekUpload();
+
+function imageUpload() {
+  
+  var element = document.getElementsByName("fileUpload")[0];
+  var files = element.files[0];
+
+  var form_data = new FormData();
+  console.log(files)
+  form_data.append("image", files);
+  form_data.append("data1","hello")
+  console.log(form_data.get('image'))
+  axios.post('http://localhost:4000/upload', form_data)
+.then((response) => {
+  console.log(response);
+}, (error) => {
+  console.log(error);
+});
+}
+
 </script>
         </div>
       </div>
-      <a href="#" class="button-2 w-button">Convert</a>
+      <button class="button-2 w-button" onclick="imageUpload()">Convert Image</button>
     </div>
   </div>
   <footer id="footer" class="footer">
