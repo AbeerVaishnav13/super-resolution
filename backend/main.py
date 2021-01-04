@@ -10,11 +10,11 @@ weights_file = lambda filename: os.path.join('weights/srgan', filename)
 
 def resolve_and_save(lr_image_path):
     lr = load_image(lr_image_path)
-    print(lr)
-    print(lr.shape)
+    # print(lr)
+    # print(lr.shape)
     gan_sr = resolve_single(gan_generator, lr)
     img_name = lr_image_path.split('/')[1].split('.')[0]
-    save_image(gan_sr, 'SR-outputs/SR (GAN)' + img_name + '.png')
+    save_image(gan_sr, 'SR-output/sr_image.png')
 
 if __name__ == "__main__":
     gan_generator = generator()
@@ -26,4 +26,4 @@ if __name__ == "__main__":
     #     signatures=None,
     # )
 
-    resolve_and_save('demo/0869x4-crop.png')
+    resolve_and_save('LR-input/lr_image.png')

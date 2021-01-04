@@ -33,7 +33,7 @@ app.listen(SERVER_PORT, () =>
 );
 
 app.post("/upload", (req, res) => {
-  //console.log(req.files);
+  console.log("Image type: " + req.files.image.type);
   fs.writeFile(input_file_path, req.files.image.data, function (err) {
     if (err) {
       console.log("Failed to save file in system");

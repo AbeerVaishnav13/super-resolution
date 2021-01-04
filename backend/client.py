@@ -9,6 +9,9 @@ def main(args):
     img = load_image(args[0])
     img = np.expand_dims(img, 0)
 
+    if img.shape[3] == 4:
+        img = img[:, :, :, :3]
+
     data = json.dumps({"signature_name": "serving_default", "instances": img.tolist()})
 
     print('Data: {} ... {}'.format(data[:50], data[len(data)-52:]))

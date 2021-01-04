@@ -11,7 +11,6 @@ def save_image(image_array, path):
 def load_image(path):
     return np.array(Image.open(path))
 
-
 def plot_sample(lr, sr):
     plt.figure(figsize=(20, 10))
 
