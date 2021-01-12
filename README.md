@@ -1,5 +1,5 @@
 # Super Resolution
-This is our 7th semested self study project which uses Super Resolution Generative Adversarial Networks (SRGAN) as the proof of concept for upscaling low resolution images (LR) to super resolution images (SR).
+This is our 7th semester self study project which uses Super Resolution Generative Adversarial Networks (SRGAN) as the proof of concept for upscaling low resolution images (LR) to super resolution images (SR).
 
 ## Technologies used
 The project utilizes the following technologies:
